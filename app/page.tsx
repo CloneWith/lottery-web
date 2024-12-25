@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import {useEffect, useState} from 'react'
 import LotteryDisplay from './components/LotteryDisplay'
 import WinnersList from './components/WinnersList'
 import Button from '@mui/material/Button'

@@ -1,22 +1,22 @@
 import './globals.css'
-import { Inter } from 'next/font/google'
+import {Inter} from 'next/font/google'
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({subsets: ['latin']})
 
 export const metadata = {
-  title: 'Lottery Website',
-  description: 'A simple lottery website built with Next.js',
+    title: 'Lottery Website',
+    description: 'A simple lottery website built with Next.js',
 }
 
 export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
+                                       children,
+                                   }: {
+    children: React.ReactNode
 }) {
-  return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
-    </html>
-  )
+    return (
+        <html lang="en">
+        <body className={inter.className}>{children}</body>
+        </html>
+    )
 }
 

@@ -1,7 +1,6 @@
 import {useState} from 'react'
 import Button from '@mui/material/Button'
-import {Input} from '../../components/ui/input'
-import {Trash2, Edit} from 'lucide-react'
+import {Edit, Trash2} from 'lucide-react'
 import TextField from "@mui/material/TextField";
 import EditIcon from "@mui/icons-material/Edit";
 import AddIcon from "@mui/icons-material/Add";
