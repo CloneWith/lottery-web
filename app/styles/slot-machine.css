@@ -1,0 +1,151 @@
+@keyframes Gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.lottery-container {
+  min-height: 100vh;
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  background-size: 400% 400%;
+  animation: Gradient 30s ease infinite;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  overflow: hidden;
+}
+
+.lottery-content {
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.start-button {
+  position: relative;
+  width: 180px;
+  height: 64px;
+  line-height: 64px;
+  text-align: center;
+  cursor: pointer;
+  font-size: 24px;
+  transition: .2s all;
+  box-sizing: border-box;
+  color: #fff;
+  border: 1px solid #fff;
+  margin: 40px auto;
+  display: block;
+}
+
+.start-button:hover {
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+  box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+.start-button::after {
+  position: absolute;
+  content: "";
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  transition: 
+      .5s outline-color, 
+      .5s outline, 
+      .5s transform;
+  transition-timing-function: cubic-bezier(0.2, .8, 0.25, .8);
+  transform: scale3d(1.1, 1.3, 0);
+  outline: 0px solid;
+  outline-color: rgba(255, 255, 255, .05);
+  outline-offset: -10px;
+}
+
+.start-button:hover::after {
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+  transform: scale(1);
+  outline: 1px solid;
+  outline-color: rgba(255, 255, 255, 0.6);
+  outline-offset: 10px;
+  transition: .5s outline-offset cubic-bezier(0.2, .8, 0.25, .8),.5s outline-color cubic-bezier(0.2, .8, 0.25, .8),.5s outline cubic-bezier(0.2, .8, 0.25, .8);
+}
+
+.start-button:active {
+  mix-blend-mode: overlay;
+}
+
+.winner-names {
+  display: flex;
+  justify-content: space-between;
+  margin: 40px 0;
+  width: 100%;
+}
+
+.winner-column {
+  font-size: 36px;
+  color: #fff;
+  text-align: center;
+  transition: .1s all;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18%;
+  max-width: 150px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.prize-display {
+  text-align: center;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.prize-display img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  margin-top: 10px;
+}
+
+.title {
+  font-size: 3rem;
+  color: #fff;
+  text-align: center;
+  margin-bottom: 1rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 40px;
+}
+
