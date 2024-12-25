@@ -1,10 +1,11 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import CSSLotteryAnimation from './components/CSSLotteryAnimation'
+import LotteryDisplay from './components/LotteryDisplay'
 import WinnersList from './components/WinnersList'
 import Button from '@mui/material/Button'
 import SettingsIcon from '@mui/icons-material/Settings'
+import ChecklistIcon from '@mui/icons-material/Checklist';
 import Link from 'next/link'
 
 interface Prize {
@@ -42,15 +43,15 @@ export default function Home() {
     <div className="min-h-screen">
       {!showWinners ? (
         <>
-          <CSSLotteryAnimation 
+          <LotteryDisplay
             people={people} 
             prizes={prizes} 
             winners={winners} 
             onLotteryComplete={handleLotteryComplete}
             setPrizes={setPrizes}
           />
-          <div className="fixed bottom-8 left-0 right-0 flex justify-center gap-4">
-            <Button onClick={() => setShowWinners(true)}>查看中奖名单</Button>
+          <div className="fixed bottom-4 right-4 flex p-4 justify-center gap-4 flex-auto bg-white rounded-lg shadow-lg">
+            <Button variant="outlined" startIcon={<ChecklistIcon />} onClick={() => setShowWinners(true)}>查看中奖名单</Button>
             <Link href="/admin">
               <Button variant="contained" startIcon={<SettingsIcon />}>管理人员和奖品</Button>
             </Link>
