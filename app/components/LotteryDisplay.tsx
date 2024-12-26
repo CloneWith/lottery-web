@@ -115,7 +115,6 @@ export default function LotteryDisplay({
                     <div className="header">
                         <h1 className="title">抽奖系统</h1>
                         <div className="controls">
-                            <Button onClick={createSnackbar("fuck you", 'success')}>Show success snackbar</Button>
                             <FormControl variant="filled" sx={{m: 1, minWidth: 120}}>
                                 <InputLabel id="gift-label">奖品</InputLabel>
                                 <Select required labelId="gift-label" variant="filled"
