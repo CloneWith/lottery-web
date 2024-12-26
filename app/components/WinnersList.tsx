@@ -1,8 +1,9 @@
 import Button from '@mui/material/Button'
-import {Trash2} from 'lucide-react'
+import DeleteIcon from '@mui/icons-material/Delete';
 
 import PersonIcon from '@mui/icons-material/Person';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import {IconButton} from "@mui/material";
 
 interface Prize {
     name: string
@@ -56,13 +57,9 @@ export default function WinnersList({
                                 <td className="p-2">{winner.name}</td>
                                 <td className="p-2">{winner.prize}</td>
                                 <td className="p-2 text-center">
-                                    <Button
-                                        variant="outlined"
-                                        size="small"
-                                        onClick={() => handleDelete(index)}
-                                    >
-                                        <Trash2 className="h-4 w-4"/>
-                                    </Button>
+                                    <IconButton onClick={() => handleDelete(index)}>
+                                        <DeleteIcon/>
+                                    </IconButton>
                                 </td>
                             </tr>
                         ))}

@@ -1,9 +1,10 @@
-import {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import Button from '@mui/material/Button'
-import {Edit, Trash2} from 'lucide-react'
 import TextField from "@mui/material/TextField";
 import EditIcon from "@mui/icons-material/Edit";
 import AddIcon from "@mui/icons-material/Add";
+import {IconButton} from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 export default function PeopleInput({people, setPeople}: { people: string[], setPeople: (people: string[]) => void }) {
     const [name, setName] = useState('')
@@ -34,6 +35,10 @@ export default function PeopleInput({people, setPeople}: { people: string[], set
         setEditIndex(index)
     }
 
+    useEffect(() => {
+        localStorage.setItem('people', JSON.stringify(people))
+    }, [people])
+
     return (
         <div className="bg-white p-6 rounded-lg shadow-lg mb-8">
             <h2 className="text-2xl font-bold mb-4">人员录入</h2>
@@ -57,12 +62,12 @@ export default function PeopleInput({people, setPeople}: { people: string[], set
                         <li key={index} className="flex items-center justify-between">
                             <span>{person}</span>
                             <div>
-                                <Button variant="outlined" size="small" onClick={() => handleEdit(index)}>
-                                    <Edit className="h-4 w-4"/>
-                                </Button>
-                                <Button variant="outlined" size="small" onClick={() => handleDelete(index)}>
-                                    <Trash2 className="h-4 w-4"/>
-                                </Button>
+                                <IconButton size="small" onClick={() => handleEdit(index)}>
+                                    <EditIcon/>
+                                </IconButton>
+                                <IconButton size="small" onClick={() => handleDelete(index)}>
+                                    <DeleteIcon/>
+                                </IconButton>
                             </div>
                         </li>
                     ))}

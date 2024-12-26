@@ -1,17 +1,18 @@
 import {useState} from 'react'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField';
-import {Edit, Trash2} from 'lucide-react'
 
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
+import {IconButton} from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 export default function PrizeConfig({prizes, setPrizes}: {
     prizes: { name: string; image: string; count: number }[],
     setPrizes: (prizes: { name: string; image: string; count: number }[]) => void
 }) {
-    const [name, setName] = useState('')
-    const [image, setImage] = useState('')
+    const [name, setName] = useState(null)
+    const [image, setImage] = useState(null)
     const [count, setCount] = useState<number>(1)
     const [editIndex, setEditIndex] = useState<number | null>(null)
 
@@ -31,8 +32,8 @@ export default function PrizeConfig({prizes, setPrizes}: {
             } else {
                 setPrizes([...prizes, newPrize])
             }
-            setName('')
-            setImage('')
+            setName(null)
+            setImage(null)
             setCount(1)
         }
     }
@@ -99,12 +100,12 @@ export default function PrizeConfig({prizes, setPrizes}: {
                                 剩余数量：{prize.count}
                             </p>
                             <div className="mt-2 flex justify-end">
-                                <Button variant="outlined" size="small" onClick={() => handleEdit(index)}>
-                                    <Edit className="h-4 w-4"/>
-                                </Button>
-                                <Button variant="outlined" size="small" onClick={() => handleDelete(index)}>
-                                    <Trash2 className="h-4 w-4"/>
-                                </Button>
+                                <IconButton onClick={() => handleEdit(index)}>
+                                    <EditIcon/>
+                                </IconButton>
+                                <IconButton onClick={() => handleDelete(index)}>
+                                    <DeleteIcon/>
+                                </IconButton>
                             </div>
                         </div>
                     ))}
