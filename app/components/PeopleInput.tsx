@@ -35,10 +35,6 @@ export default function PeopleInput({people, setPeople}: { people: string[], set
         setEditIndex(index)
     }
 
-    useEffect(() => {
-        localStorage.setItem('people', JSON.stringify(people))
-    }, [people])
-
     return (
         <div className="bg-white p-6 rounded-lg shadow-lg mb-8">
             <h2 className="text-2xl font-bold mb-4">人员录入</h2>

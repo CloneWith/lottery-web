@@ -11,10 +11,10 @@ export default function AdminPage() {
     const [people, setPeople] = useState<string[]>([])
     const [prizes, setPrizes] = useState<{ name: string; image: string; count: number }[]>([])
 
-    useEffect(() => {
-        const storedPeople = localStorage.getItem('people')
-        const storedPrizes = localStorage.getItem('prizes')
+    const storedPeople = localStorage.getItem('people')
+    const storedPrizes = localStorage.getItem('prizes')
 
+    useEffect(() => {
         if (storedPeople) setPeople(JSON.parse(storedPeople))
         if (storedPrizes) setPrizes(JSON.parse(storedPrizes))
     }, [])
@@ -32,9 +32,7 @@ export default function AdminPage() {
                 <PrizeConfig prizes={prizes} setPrizes={setPrizes}/>
             </div>
             <div className="mt-8 text-center">
-                <Link href="/">
-                    <Button variant="contained" startIcon={<ArrowBackIcon/>}>返回抽奖页面</Button>
-                </Link>
+                    <Button variant="contained" href="/" startIcon={<ArrowBackIcon/>}>返回抽奖页面</Button>
             </div>
         </div>
     )
