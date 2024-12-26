@@ -1,10 +1,13 @@
-import {useRef, useState} from 'react'
+import React, {useRef, useState} from 'react'
 import Select from '@mui/material/Select';
 import '../styles/slot-machine.css'
-import {MenuItem} from "@mui/material";
+import {FormControl, InputLabel, MenuItem} from "@mui/material";
 import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import {PlayArrow, Stop} from "@mui/icons-material";
+import {SnackbarProvider, useSnackbar, VariantType} from "notistack";
 
-interface Prize {
+export interface Prize {
     name: string
     image: string
     count: number
@@ -18,18 +21,25 @@ interface LotteryProps {
     setPrizes: (prizes: Prize[]) => void
 }
 
+
 export default function LotteryDisplay({
-                                                people,
-                                                prizes,
-                                                winners,
-                                                onLotteryComplete,
-                                                setPrizes
-                                            }: LotteryProps) {
+                                           people,
+                                           prizes,
+                                           winners,
+                                           onLotteryComplete,
+                                           setPrizes
+                                       }: LotteryProps) {
     const [isRolling, setIsRolling] = useState(false)
     const [currentPrize, setCurrentPrize] = useState<string>('')
     const [currentCount, setCurrentCount] = useState<number>(1)
     const [displayNames, setDisplayNames] = useState<string[]>(Array(5).fill(''))
     const timeoutRef = useRef<NodeJS.Timeout | null>(null)
+
+    const {enqueueSnackbar} = useSnackbar()
+    const createSnackbar = (message: string, variant: VariantType) => () => {
+        // variant could be success, error, warning, info, or default
+        enqueueSnackbar(message, {variant});
+    };
 
     const startLottery = () => {
         if (isRolling) {
@@ -39,21 +49,19 @@ export default function LotteryDisplay({
 
         const selectedPrize = prizes.find(p => p.name === currentPrize)
         if (!selectedPrize || currentCount > selectedPrize.count) {
-            //toast({
-            //  title: "奖品数量不足",
-            //  description: `当前奖品 "${currentPrize}" 剩余数量为 ${selectedPrize?.count || 0}，无法抽取 ${currentCount} 个。`,
-            //  variant: "destructive",
-            //})
+            createSnackbar(
+                `奖品数量不足\n当前奖品 "${currentPrize}" 剩余数量为 ${selectedPrize?.count || 0}，无法抽取 ${currentCount} 个。`,
+                "error"
+            )
             return
         }
 
         const availablePeople = people.filter(person => !winners.some(winner => winner.name === person))
         if (availablePeople.length < currentCount) {
-            //toast({
-            //  title: "参与人数不足",
-            //  description: `当前可参与抽奖的人数为 ${availablePeople.length}，无法抽取 ${currentCount} 个中奖者。`,
-            //  variant: "destructive",
-            //})
+            createSnackbar(
+                `参与人数不足\n当前可参与抽奖的人数为 ${availablePeople.length}\n无法抽取 ${currentCount} 个中奖者。`,
+                "error"
+            )
             return
         }
 
@@ -99,61 +107,66 @@ export default function LotteryDisplay({
     }
 
     const availablePrizes = prizes.filter(prize => prize.count > 0)
-    const menuItems = availablePrizes.map((prize, index) => (
-        <MenuItem value={index}>{prize.name} (剩余 {prize.count})</MenuItem>
-    ))
 
     return (
-        <div className="lottery-container">
-            <div className="lottery-content">
-                <div className="header">
-                    <h1 className="title">抽奖系统</h1>
-                    <div className="controls">
-                        <Select required label="奖品" variant="filled"
-                                onChange={value => setCurrentPrize(value.target.name)}>
-                            {availablePrizes.map((prize, index) => (
-                                <MenuItem key={index} value={prize.name}>{prize.name} (剩余 {prize.count})</MenuItem>
+        <SnackbarProvider maxSnack={5}>
+            <div className="lottery-container">
+                <div className="lottery-content">
+                    <div className="header">
+                        <h1 className="title">抽奖系统</h1>
+                        <div className="controls">
+                            <Button onClick={createSnackbar("fuck you", 'success')}>Show success snackbar</Button>
+                            <FormControl variant="filled" sx={{m: 1, minWidth: 120}}>
+                                <InputLabel id="gift-label">奖品</InputLabel>
+                                <Select required labelId="gift-label" variant="filled"
+                                        onChange={value => setCurrentPrize(value.target.value as string)}>
+                                    {availablePrizes.map((prize, index) => (
+                                        <MenuItem key={index}
+                                                  value={prize.name}>{prize.name} (剩余 {prize.count})</MenuItem>
+                                    ))}
+                                </Select>
+                                <TextField
+                                    required
+                                    label="抽奖数量"
+                                    variant="filled"
+                                    type="number"
+                                    value={currentCount}
+                                    error={currentCount < 1 || currentCount > (prizes.find(p => p.name === currentPrize)?.count || 1)}
+                                    helperText={currentCount < 1 || currentCount > (prizes.find(p => p.name === currentPrize)?.count || 1) ? "应在奖品数量范围内" : ""}
+                                    onChange={(e) => setCurrentCount(parseInt(e.target.value))}
+                                />
+                            </FormControl>
+                        </div>
+                    </div>
+
+                    {currentPrize && (
+                        <div className="prize-display">
+                            <p className="text-xl mb-2 text-white">当前奖品：{currentPrize}</p>
+                            <img
+                                src={prizes.find(p => p.name === currentPrize)?.image.trim()
+                                    ? prizes.find(p => p.name === currentPrize)?.image.trim() : null}
+                                alt={currentPrize}
+                            />
+                        </div>
+                    )}
+
+                    {isRolling || displayNames.some(name => name !== '') ? (
+                        <div className="winner-names">
+                            {displayNames.map((name, index) => (
+                                <div key={index} className="winner-column flex items-center justify-center">{name}</div>
                             ))}
-                        </Select>
-                        <TextField
-                            required
-                            label="抽奖数量"
-                            variant="filled"
-                            type="number"
-                            value={currentCount}
-                            error={currentCount < 1 || currentCount > (prizes.find(p => p.name === currentPrize)?.count || 1)}
-                            helperText={currentCount < 1 || currentCount > (prizes.find(p => p.name === currentPrize)?.count || 1) ? "应在奖品数量范围内" : ""}
-                            onChange={(e) => setCurrentCount(parseInt(e.target.value))}
-                        />
-                    </div>
+                        </div>
+                    ) : null}
+
+                    <Button
+                        variant="contained"
+                        startIcon={isRolling ? <Stop/> : <PlayArrow/>}
+                        className="start-button"
+                        onClick={startLottery}
+                        disabled={!currentPrize}
+                    >{isRolling ? 'Stop' : 'Start'}</Button>
                 </div>
-
-                {currentPrize && (
-                    <div className="prize-display">
-                        <p className="text-xl mb-2 text-white">当前奖品：{currentPrize}</p>
-                        <img
-                            src={prizes.find(p => p.name === currentPrize)?.image}
-                            alt={currentPrize}
-                        />
-                    </div>
-                )}
-
-                {isRolling || displayNames.some(name => name !== '') ? (
-                    <div className="winner-names">
-                        {displayNames.map((name, index) => (
-                            <div key={index} className="winner-column flex items-center justify-center">{name}</div>
-                        ))}
-                    </div>
-                ) : null}
-
-                <button
-                    className="start-button"
-                    onClick={startLottery}
-                    disabled={!currentPrize}
-                >
-                    {isRolling ? 'Stop' : 'Start'}
-                </button>
             </div>
-        </div>
+        </SnackbarProvider>
     )
 }

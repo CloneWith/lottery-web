@@ -11,8 +11,8 @@ export default function PrizeConfig({prizes, setPrizes}: {
     prizes: { name: string; image: string; count: number }[],
     setPrizes: (prizes: { name: string; image: string; count: number }[]) => void
 }) {
-    const [name, setName] = useState(null)
-    const [image, setImage] = useState(null)
+    const [name, setName] = useState("")
+    const [image, setImage] = useState("")
     const [count, setCount] = useState<number>(1)
     const [editIndex, setEditIndex] = useState<number | null>(null)
 
@@ -21,7 +21,7 @@ export default function PrizeConfig({prizes, setPrizes}: {
         if (name.trim()) {
             const newPrize = {
                 name: name.trim(),
-                image: image.trim() ?? "",
+                image: image.trim() ?? null,
                 count: count || 1
             }
             if (editIndex !== null) {
@@ -32,8 +32,8 @@ export default function PrizeConfig({prizes, setPrizes}: {
             } else {
                 setPrizes([...prizes, newPrize])
             }
-            setName(null)
-            setImage(null)
+            setName("")
+            setImage("")
             setCount(1)
         }
     }
@@ -94,7 +94,7 @@ export default function PrizeConfig({prizes, setPrizes}: {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {prizes.map((prize, index) => (
                         <div key={index} className="border p-2 rounded">
-                            <img src={prize.image} alt={prize.name} className="w-full h-32 object-cover mb-2"/>
+                            <img src={prize.image.trim() ? prize.image.trim() : null} alt={prize.name} className="w-full h-32 object-cover mb-2"/>
                             <p className="font-bold">{prize.name}</p>
                             <p className={`${prize.count === 0 ? 'text-red-500' : ''}`}>
                                 剩余数量：{prize.count}
